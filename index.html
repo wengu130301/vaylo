@@ -1,1371 +1,359 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans" data-lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="VayloOS — 搭载自研 Nex Kernel 内核的操作系统。下载 vaylos.iso 镜像，VayloOS 介绍详情见 LaswI 官网。" />
-  <title>VayloOS 下载 · LaswI</title>
-  <style>
-
-/* ============================================================
-   LaswI Official Website — Aqua "Candy Jelly" Theme (v2)
-   仅此一份全局样式，6 页共用。纯 CSS 拟物，无图片贴图。
-   唯一主光源：左上。高饱和 Aqua 蓝 / 青 / 白。
-   类契约与响应式断点保持不变，HTML 零改动。
-   ============================================================ */
-
-/* ---------- 基础 ---------- */
-:root {
-  --aqua-ink: #07398f;
-  --aqua-ink-deep: #03285f;
-  --aqua-deep: #0a4bb0;
-  --aqua-mid: #1683e8;
-  --aqua-bright: #3fb6ff;
-  --aqua-cyan: #9be8ff;
-  --aqua-white: #ffffff;
-  --glass-high: rgba(255, 255, 255, 0.92);
-  --glass-mid: rgba(255, 255, 255, 0.55);
-  --navy-glass-a: rgba(255, 255, 255, 0.12);
-}
-
-* { box-sizing: border-box; }
-
-html { -webkit-text-size-adjust: 100%; }
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
-  color: #10355f;
-  background-color: #bfe2f9;
-  background-image:
-    radial-gradient(120% 70% at 12% -12%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.35) 42%, rgba(255, 255, 255, 0) 68%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.65) 0px, rgba(255, 255, 255, 0.65) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 4px),
-    repeating-linear-gradient(90deg, rgba(70, 140, 225, 0.05) 0px, rgba(70, 140, 225, 0.05) 1px, rgba(70, 140, 225, 0) 1px, rgba(70, 140, 225, 0) 12px),
-    linear-gradient(180deg, #cdeaff 0%, #d6f0fd 24%, #bcddf6 62%, #a8c9ea 100%);
-  background-attachment: fixed;
-  line-height: 1.62;
-  -webkit-font-smoothing: antialiased;
-}
-
-img { max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-
-/* 湿润半透明滚动条 */
-::-webkit-scrollbar { width: 12px; height: 12px; }
-::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, rgba(160, 205, 245, 0.5), rgba(230, 245, 255, 0.5));
-  box-shadow: inset 0 0 0 1px rgba(8, 60, 150, 0.12);
-}
-::-webkit-scrollbar-thumb {
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  border-radius: 999px;
-  background:
-    radial-gradient(120% 160% at 24% 8%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.45) 32%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(180deg, #65c8ff 0%, #1b8cf0 55%, #0a5ed4 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6), 0 1px 4px rgba(10, 60, 150, 0.35);
-}
-
-::selection { background: rgba(70, 180, 255, 0.45); color: #03285f; }
-
-/* ---------- 布局容器 ---------- */
-.container { width: 1120px; max-width: calc(100% - 64px); margin: 0 auto; }
-
-/* ============================================================
-   导航：拉丝金属 + 银色玻璃工具栏 + 顶/底发丝高光线
-   ============================================================ */
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: rgba(242, 249, 255, 0.86);
-  -webkit-backdrop-filter: blur(16px) saturate(1.35);
-  backdrop-filter: blur(16px) saturate(1.35);
-  background-image:
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0px, rgba(255, 255, 255, 0.10) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 3px),
-    repeating-linear-gradient(180deg, rgba(40, 120, 220, 0.055) 0px, rgba(40, 120, 220, 0.055) 1px, rgba(40, 120, 220, 0) 1px, rgba(40, 120, 220, 0) 5px),
-    linear-gradient(180deg, #f8fdff 0%, #e8f4fe 42%, #d7e9fa 78%, #c7ddf4 100%);
-  border-bottom: 1px solid rgba(9, 55, 140, 0.30);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.75),
-    0 1px 0 rgba(255, 255, 255, 0.8),
-    0 14px 26px -18px rgba(4, 42, 120, 0.75);
-}
-
-.nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-  padding: 11px 0;
-}
-
-/* 品牌 logo：玻璃底座 + 柔和镜面倒影 */
-.brand { display: inline-flex; align-items: center; gap: 10px; }
-
-.brand .brand-logo {
-  display: inline-block;
-  padding: 4px;
-  border-radius: 13px;
-  background:
-    radial-gradient(120% 140% at 30% 12%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.2) 34%, rgba(255, 255, 255, 0) 58%),
-    linear-gradient(180deg, rgba(120, 190, 255, 0.35) 0%, rgba(60, 130, 235, 0.10) 60%, rgba(20, 80, 200, 0.28) 100%);
-  border: 1px solid rgba(10, 55, 150, 0.42);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.95),
-    inset 0 1px 2px rgba(255, 255, 255, 0.9),
-    0 2px 3px rgba(6, 40, 130, 0.35),
-    0 6px 12px -6px rgba(6, 40, 130, 0.55);
-  -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.62, transparent), to(rgba(255, 255, 255, 0.32)));
-  transform: translateZ(0);
-}
-.brand .brand-logo img { display: block; width: 34px; height: 34px; border-radius: 9px; }
-
-.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
-
-.nav-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 15px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  font-weight: 700;
-  color: #0e3f88;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-  transition: color 0.16s ease, background-color 0.16s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.nav-links a:hover {
-  background-color: rgba(255, 255, 255, 0.55);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 2px 6px -3px rgba(10, 60, 160, 0.35);
-  color: #06306f;
-  transform: translateY(-1px);
-}
-
-.nav-links a.active {
-  color: #ffffff;
-  border-color: rgba(6, 40, 130, 0.55);
-  background:
-    radial-gradient(130% 200% at 30% -30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.28) 38%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(180deg, #5ec6ff 0%, #1f90f2 45%, #0b62d8 100%);
-  text-shadow: 0 -1px 1px rgba(4, 30, 110, 0.5);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
-    inset 0 2px 3px rgba(255, 255, 255, 0.5),
-    inset 0 -5px 10px -6px rgba(4, 30, 110, 0.75),
-    0 2px 2px rgba(4, 30, 110, 0.30),
-    0 8px 16px -10px rgba(8, 80, 210, 0.75);
-}
-
-.nav-links a.active:hover { background-color: transparent; }
-
-/* ============================================================
-   果冻糖果按钮族
-   ============================================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  cursor: pointer;
-  border: 1.5px solid rgba(5, 40, 140, 0.85);
-  border-radius: 999px;
-  padding: 11px 26px;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  text-shadow: 0 -1px 2px rgba(3, 30, 110, 0.6);
-  background:
-    radial-gradient(120% 210% at 50% -28%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.60) 26%, rgba(255, 255, 255, 0) 55%),
-    radial-gradient(38% 56% at 24% 12%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.45) 40%, rgba(255, 255, 255, 0) 72%),
-    radial-gradient(65% 130% at 80% 115%, rgba(0, 60, 210, 0.65) 0%, rgba(0, 60, 210, 0) 58%),
-    linear-gradient(180deg, #aee6ff 0%, #49bfff 20%, #1489f2 46%, #0a63dd 74%, #0743ad 100%);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.72),
-    inset 0 3px 6px -2px rgba(255, 255, 255, 0.85),
-    inset 0 -10px 16px -10px rgba(4, 30, 130, 0.65),
-    0 2px 1px rgba(2, 28, 120, 0.55),
-    0 5px 14px -5px rgba(10, 80, 220, 0.65),
-    0 0 18px -4px rgba(140, 225, 255, 0.85);
-  transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.4), box-shadow 0.18s ease, filter 0.18s ease;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.btn:hover {
-  transform: translateY(-2px) scale(1.035);
-  filter: saturate(1.25) brightness(1.08);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.95),
-    inset 0 5px 9px -3px rgba(255, 255, 255, 0.95),
-    inset 0 -10px 16px -9px rgba(4, 30, 130, 0.5),
-    0 4px 2px rgba(2, 28, 120, 0.5),
-    0 12px 22px -8px rgba(10, 90, 230, 0.85),
-    0 0 26px -2px rgba(150, 230, 255, 0.95);
-}
-
-.btn:active {
-  transform: translateY(1px) scale(0.985);
-  filter: none;
-  background:
-    linear-gradient(180deg, #7cd4ff 0%, #2596f0 38%, #0f6cdd 68%, #0a51bf 100%);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.4),
-    inset 0 6px 12px -2px rgba(3, 25, 110, 0.85),
-    inset 0 3px 6px rgba(3, 25, 110, 0.5),
-    inset 0 -2px 4px -2px rgba(255, 255, 255, 0.35),
-    0 1px 1px rgba(2, 28, 120, 0.35),
-    0 2px 6px -2px rgba(10, 80, 220, 0.6);
-}
-
-/* 原版主导按钮同样糖果化，保留蓝系（.btn 已是蓝糖果，此处仅兜底） */
-.btn-primary,
-.btn-blue {
-  border-color: rgba(5, 40, 140, 0.9);
-}
-
-/* 果冻白/亮青按钮 */
-.btn-ghost,
-.btn-outline {
-  color: #0a4bb0;
-  background:
-    radial-gradient(120% 190% at 50% -26%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.72) 30%, rgba(255, 255, 255, 0) 60%),
-    radial-gradient(34% 52% at 24% 12%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 38%, rgba(255, 255, 255, 0) 70%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(240, 250, 255, 0.88) 40%, rgba(214, 238, 255, 0.92) 100%);
-  border-color: rgba(9, 60, 170, 0.55);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.95),
-    inset 0 3px 6px -2px rgba(255, 255, 255, 1),
-    0 2px 1px rgba(5, 45, 150, 0.35),
-    0 6px 14px -6px rgba(20, 100, 235, 0.4),
-    0 0 16px -4px rgba(190, 235, 255, 0.9);
-}
-
-.btn-ghost:hover,
-.btn-outline:hover {
-  color: #083a99;
-  transform: translateY(-2px) scale(1.025);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 1),
-    inset 0 5px 10px -3px rgba(255, 255, 255, 1),
-    0 4px 3px rgba(5, 45, 150, 0.32),
-    0 12px 22px -8px rgba(20, 100, 235, 0.5),
-    0 0 24px -2px rgba(200, 240, 255, 1);
-}
-
-.btn-ghost:active,
-.btn-outline:active {
-  transform: translateY(1px) scale(0.98);
-  background: linear-gradient(180deg, #e2f3ff 0%, #c3e6ff 48%, #a8d8fb 100%);
-  box-shadow:
-    inset 0 4px 10px -2px rgba(10, 60, 170, 0.35),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
-    0 1px 1px rgba(5, 45, 150, 0.3);
-}
-
-/* 导航内 CTA 隔离：拉丝工具栏上的糖果按钮需要高优先级规则，防 .nav-links a:hover 覆盖 */
-.nav-links a.btn,
-.nav-links a.btn-mail,
-.nav-links a.nav-cta {
-  padding: 8px 18px;
-  font-size: 14px;
-  color: #ffffff;
-  text-shadow: 0 -1px 2px rgba(3, 30, 110, 0.6);
-  background:
-    radial-gradient(120% 210% at 50% -28%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.6) 26%, rgba(255, 255, 255, 0) 55%),
-    radial-gradient(38% 56% at 24% 12%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.45) 40%, rgba(255, 255, 255, 0) 72%),
-    linear-gradient(180deg, #aee6ff 0%, #49bfff 20%, #1489f2 46%, #0a63dd 74%, #0743ad 100%);
-  border-color: rgba(5, 40, 140, 0.85);
-}
-
-.nav-links a.btn:hover,
-.nav-links a.btn-mail:hover,
-.nav-links a.nav-cta:hover {
-  color: #ffffff;
-  transform: translateY(-2px) scale(1.03);
-  filter: saturate(1.25) brightness(1.08);
-  background:
-    radial-gradient(120% 210% at 50% -30%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.7) 28%, rgba(255, 255, 255, 0) 58%),
-    radial-gradient(40% 58% at 24% 10%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.55) 40%, rgba(255, 255, 255, 0) 74%),
-    linear-gradient(180deg, #b6ebff 0%, #55c6ff 20%, #1d93f5 46%, #0c68e2 74%, #0a4dbb 100%);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.95),
-    inset 0 4px 8px -2px rgba(255, 255, 255, 0.9),
-    inset 0 -10px 16px -9px rgba(4, 30, 130, 0.5),
-    0 4px 3px rgba(2, 28, 120, 0.5),
-    0 12px 22px -8px rgba(10, 90, 230, 0.85),
-    0 0 22px -2px rgba(150, 230, 255, 0.9);
-}
-
-.nav-links a.btn:active,
-.nav-links a.btn-mail:active,
-.nav-links a.nav-cta:active {
-  transform: translateY(1px) scale(0.98);
-  filter: none;
-  background: linear-gradient(180deg, #7cd4ff 0%, #2596f0 38%, #0f6cdd 68%, #0a51bf 100%);
-  box-shadow:
-    inset 0 6px 12px -2px rgba(3, 25, 110, 0.8),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
-    0 1px 1px rgba(2, 28, 120, 0.4);
-}
-
-/* 文案型可点击链接（.card-link）做成“果冻字”，hover 似指尖按下 */
-.card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 800;
-  color: #0a63dd;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
-  transition: color 0.16s ease, text-shadow 0.16s ease, transform 0.16s ease;
-}
-
-.card-link:hover {
-  color: #073fa3;
-  text-shadow: 0 0 9px rgba(110, 215, 255, 0.95), 0 1px 0 rgba(255, 255, 255, 0.95);
-  transform: translateX(2px);
-}
-
-/* ============================================================
-   页头 / Hero
-   ============================================================ */
-.page-hero {
-  position: relative;
-  padding: 46px 0 34px;
-  text-align: left;
-}
-
-.crumbs {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  margin: 0 0 16px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  color: #0a4bb0;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6), 0 2px 6px -3px rgba(10, 60, 170, 0.35);
-}
-.crumbs a { color: #0a63dd; font-weight: 700; }
-.crumbs a:hover { color: #073fa3; text-shadow: 0 0 8px rgba(110, 215, 255, 0.8); }
-
-/* Aqua 玻璃字标题：深蓝凸字 + 上缘内收高光，模仿透明玻璃内部折射 */
-h1, h2, h3, .section-head h2, .hero h1 {
-  letter-spacing: 0.01em;
-  color: #063a93;
-}
-
-h1 {
-  font-size: 52px;
-  line-height: 1.16;
-  font-weight: 900;
-  color: #04327f;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.85),
-    0 2px 3px rgba(4, 40, 120, 0.25),
-    0 -1px 1px rgba(255, 255, 255, 0.35);
-}
-
-h2 {
-  font-size: 34px;
-  line-height: 1.25;
-  font-weight: 900;
-  color: #05327f;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.8),
-    0 -1px 1px rgba(255, 255, 255, 0.3);
-}
-
-h3 {
-  font-size: 20px;
-  line-height: 1.35;
-  font-weight: 800;
-  color: #073a93;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-}
-
-.hero {
-  padding: 76px 0 60px;
-}
-
-.hero .hl {
-  display: inline-block;
-  background: linear-gradient(100deg, #062f8c 0%, #1474e8 50%, #0694e0 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: none;
-}
-
-.hero p.lead,
-.page-hero p.lead {
-  font-size: 19px;
-  color: #16477f;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  align-items: center;
-  gap: 40px;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
-  align-items: center;
-}
-
-/* 主视觉：Aqua logo 玻璃底座 + 倒影式高光 */
-.hero-art {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 340px;
-}
-
-.hero-logo {
-  position: relative;
-  display: inline-block;
-  width: 250px;
-  height: 250px;
-  border-radius: 58px;
-  padding: 22px;
-  background:
-    radial-gradient(150% 220% at 24% 6%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.25) 34%, rgba(255, 255, 255, 0) 60%),
-    radial-gradient(70% 130% at 78% 112%, rgba(30, 110, 255, 0.65) 0%, rgba(30, 110, 255, 0) 56%),
-    linear-gradient(180deg, #c9f0ff 0%, #7fd6ff 42%, #2f9bf5 100%);
-  border: 1px solid rgba(7, 45, 150, 0.65);
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.85),
-    inset 0 4px 12px -4px rgba(255, 255, 255, 1),
-    inset 0 -20px 34px -20px rgba(4, 40, 160, 0.7),
-    0 3px 2px rgba(4, 34, 130, 0.55),
-    0 16px 26px -10px rgba(4, 50, 160, 0.75),
-    0 0 40px -8px rgba(120, 220, 255, 0.9);
-  -webkit-box-reflect: below 16px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.6, transparent), to(rgba(255, 255, 255, 0.28)));
-}
-
-.hero-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.72, transparent), to(rgba(255, 255, 255, 0.22)));
-  filter: drop-shadow(0 4px 5px rgba(6, 40, 130, 0.35));
-}
-
-/* ============================================================
-   分区与章节头
-   ============================================================ */
-.section { padding: 40px 0 52px; }
-
-.section-head {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto 36px;
-}
-
-.section-head .kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: #0a55b8;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-  margin-bottom: 10px;
-}
-
-.section-head .kicker::before,
-.section-head .kicker::after {
-  content: "";
-  display: block;
-  width: 22px;
-  height: 9px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #9be0ff, #c9ecff);
-  box-shadow: inset 0 0 0 1px rgba(8, 60, 160, 0.28), 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.section-head p {
-  font-size: 16px;
-  color: #16477f;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
-}
-
-/* 凹槽式分区下边缘 */
-.section + .section {
-  position: relative;
-}
-.section + .section::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 8%; right: 8%;
-  height: 2px;
-  background: linear-gradient(180deg, rgba(9, 55, 150, 0.35), rgba(9, 55, 150, 0));
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-  border-radius: 999px;
-  pointer-events: none;
-}
-
-/* ============================================================
-   网格与浸水玻璃卡片
-   ============================================================ */
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
-
-/* 玻璃果冻块基底（水中抬起会浮起） */
-.card,
-.feature-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 22px;
-  padding: 30px 28px;
-  border: 1px solid rgba(8, 58, 165, 0.42);
-  background:
-    radial-gradient(120% 130% at 84% -14%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.22) 34%, rgba(255, 255, 255, 0) 62%),
-    radial-gradient(56% 100% at 10% 108%, rgba(40, 140, 250, 0.22) 0%, rgba(40, 140, 250, 0) 56%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(242, 250, 255, 0.78) 52%, rgba(216, 238, 255, 0.82) 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.95),
-    inset 0 12px 18px -12px rgba(255, 255, 255, 0.98),
-    inset 0 -16px 26px -18px rgba(10, 60, 170, 0.45),
-    0 2px 1px rgba(10, 55, 160, 0.25),
-    0 20px 32px -20px rgba(4, 45, 150, 0.75),
-    0 0 22px -10px rgba(120, 215, 255, 0.9);
-  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.24s ease, background 0.24s ease;
-}
-
-/* 顶部弧面“水下弧光”：只落在卡片空白内边距区 */
-.card::before,
-.feature-card::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: 7%; right: 7%;
-  top: -8px;
-  height: 34px;
-  border-radius: 50%;
-  background: radial-gradient(52% 100% at 50% 6%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.35) 48%, rgba(255, 255, 255, 0) 78%);
-  pointer-events: none;
-}
-
-.card:hover,
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 1),
-    inset 0 14px 20px -12px rgba(255, 255, 255, 1),
-    inset 0 -16px 26px -16px rgba(10, 60, 170, 0.35),
-    0 5px 4px rgba(10, 55, 160, 0.25),
-    0 30px 44px -20px rgba(4, 55, 180, 0.85),
-    0 0 36px -8px rgba(140, 230, 255, 1);
-  background:
-    radial-gradient(130% 140% at 86% -16%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.3) 36%, rgba(255, 255, 255, 0) 62%),
-    radial-gradient(56% 100% at 10% 108%, rgba(60, 160, 255, 0.3) 0%, rgba(60, 160, 255, 0) 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 253, 255, 0.88) 50%, rgba(226, 244, 255, 0.9) 100%);
-}
-
-/** 正文描述（多为 p.desc）统一文字质感 */
-.desc,
-.card p,
-.feature-card p {
-  font-size: 15px;
-  color: #1b4a7c;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.card-icon,
-.feature-card .icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  font-size: 26px;
-  margin-bottom: 16px;
-  background:
-    radial-gradient(120% 160% at 28% 12%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.35) 38%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(180deg, #c8f2ff 0%, #7ad6ff 45%, #2f9bf2 100%);
-  border: 1px solid rgba(8, 50, 160, 0.55);
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.9),
-    inset 0 3px 6px -2px rgba(255, 255, 255, 0.9),
-    0 3px 3px rgba(6, 40, 140, 0.4),
-    0 8px 14px -6px rgba(6, 40, 140, 0.55);
-  text-shadow: 0 -1px 2px rgba(3, 30, 110, 0.5);
-}
-
-/* 特性卡副标题：圆润小胶囊 */
-.feature-card .sub {
-  display: inline-flex;
-  align-items: center;
-  margin: -6px 0 12px;
-  padding: 3px 12px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #0a4bb0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(222, 242, 255, 0.9));
-  border: 1px solid rgba(8, 55, 165, 0.35);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(8, 50, 150, 0.22);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
-}
-
-.card .badge {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #063a8f;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(219, 240, 255, 0.9));
-  border: 1px solid rgba(9, 60, 170, 0.35);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(8, 50, 150, 0.25);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-/* feature-card 的 chips / tag */
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 13px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #0a4bb0;
-  background:
-    radial-gradient(120% 150% at 28% 12%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 42%, rgba(255, 255, 255, 0) 64%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(222, 242, 255, 0.92));
-  border: 1px solid rgba(8, 55, 165, 0.4);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 2px 3px rgba(8, 50, 150, 0.3);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
-}
-
-/* 合作方 logo 玻璃板（含分区用简单列表） */
-.partner-simple {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  justify-content: center;
-  padding: 18px 0 8px;
-}
-
-.partner-simple .partner-logo {
-  position: relative;
-  overflow: hidden;
-  border-radius: 18px;
-  padding: 18px 26px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(8, 58, 165, 0.4);
-  background:
-    radial-gradient(120% 130% at 84% -14%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.2) 34%, rgba(255, 255, 255, 0) 62%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(232, 247, 255, 0.75) 55%, rgba(210, 235, 255, 0.8) 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.95),
-    inset 0 10px 14px -10px rgba(255, 255, 255, 0.95),
-    0 2px 1px rgba(10, 55, 160, 0.22),
-    0 12px 18px -12px rgba(4, 45, 150, 0.55);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.partner-simple .partner-logo::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: 10%; right: 10%;
-  top: -6px;
-  height: 18px;
-  border-radius: 50%;
-  background: radial-gradient(50% 100% at 50% 8%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.28) 50%, rgba(255, 255, 255, 0) 80%);
-  pointer-events: none;
-}
-
-.partner-simple .partner-logo:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 1),
-    inset 0 12px 16px -10px rgba(255, 255, 255, 1),
-    0 5px 4px rgba(10, 55, 160, 0.22),
-    0 22px 28px -16px rgba(4, 55, 180, 0.8);
-}
-
-.partner-simple .partner-logo img {
-  height: 42px;
-  width: auto;
-  filter: drop-shadow(0 2px 3px rgba(8, 50, 150, 0.3));
-  -webkit-box-reflect: below 3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.78, transparent), to(rgba(255, 255, 255, 0.25)));
-}
-
-/* 分区里的 h3 / quote */
-.partner-simple h3,
-.partner-simple .quote {
-  font-size: 15px;
-  font-weight: 800;
-  color: #073a93;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-/* 深蓝玻璃提示条（notice）：轻微内凹的果冻板 */
-.notice {
-  position: relative;
-  margin: 26px 0;
-  padding: 16px 22px;
-  border-radius: 16px;
-  font-size: 14px;
-  color: #eaf6ff;
-  border: 1px solid rgba(8, 60, 180, 0.7);
-  background:
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0px, rgba(255, 255, 255, 0.06) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 4px),
-    radial-gradient(120% 170% at 84% -20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 36%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(180deg, #2b7de6 0%, #115cc9 55%, #083f9e 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
-    inset 0 -10px 18px -12px rgba(2, 20, 80, 0.8),
-    0 2px 1px rgba(10, 55, 160, 0.3),
-    0 12px 18px -12px rgba(4, 45, 150, 0.6);
-  text-shadow: 0 -1px 1px rgba(2, 20, 80, 0.5);
-}
-
-/* ============================================================
-   Footer：深蓝玻璃拉丝条
-   ============================================================ */
-.footer {
-  margin-top: 40px;
-  border-radius: 26px 26px 0 0;
-  border-top: 1px solid rgba(6, 45, 150, 0.55);
-  background:
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.075) 0px, rgba(255, 255, 255, 0.075) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 3px),
-    radial-gradient(130% 160% at 18% -22%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.05) 38%, rgba(255, 255, 255, 0) 62%),
-    linear-gradient(180deg, #154f9e 0%, #0d3f86 42%, #072c62 100%);
-  color: rgba(232, 245, 255, 0.92);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -2px 0 rgba(3, 22, 70, 0.6),
-    0 -10px 26px -18px rgba(3, 30, 100, 0.8);
-}
-
-.footer-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 22px 4px;
-  font-size: 13px;
-  color: rgba(232, 245, 255, 0.88);
-  text-shadow: 0 -1px 1px rgba(2, 18, 60, 0.6);
-}
-
-.footer a {
-  color: #cfeeff;
-  font-weight: 700;
-  text-shadow: 0 -1px 1px rgba(2, 18, 60, 0.6);
-  transition: color 0.15s ease, text-shadow 0.15s ease;
-}
-.footer a:hover {
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(160, 230, 255, 0.9), 0 -1px 1px rgba(2, 18, 60, 0.6);
-}
-
-/* ============================================================
-   响应式（断点契约不变）
-   ============================================================ */
-@media (max-width: 900px) {
-  .container { width: 100%; max-width: 100%; padding: 0 20px; }
-
-  .nav-inner {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px 0;
-  }
-
-  .nav-links { flex-wrap: wrap; justify-content: center; gap: 6px; }
-
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
-  .hero-actions { justify-content: center; }
-
-  .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 20px; }
-
-  .section-head { margin-bottom: 26px; }
-  h1 { font-size: 36px; }
-  h2 { font-size: 27px; }
-
-  .hero { padding: 46px 0 30px; }
-  .page-hero { padding: 30px 0 24px; }
-  .hero-art { min-height: 240px; }
-  .hero-logo { width: 180px; height: 180px; padding: 16px; }
-
-  .partner-simple { gap: 12px; }
-  .partner-simple .partner-logo { padding: 12px 16px; }
-  .partner-simple .partner-logo img { height: 34px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
-}
-
-
-/* ============================================================
-   Aqua v3 · 极致拟物精修覆盖层
-   依据渲染验收：卡片厚玻璃边、页脚 Dock 玻璃、标题立体字、
-   按钮糖衣锐化、导航顶部反光罩。选择器同 v2 或更强，后出现即生效。
-   ============================================================ */
-
-/* 背景更饱和通透，条纹对比加强 */
-body {
-  background-image:
-    radial-gradient(120% 70% at 12% -12%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 38%, rgba(255,255,255,0) 64%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.80) 0px, rgba(255,255,255,0.80) 1px, rgba(255,255,255,0) 1px, rgba(255,255,255,0) 5px),
-    repeating-linear-gradient(90deg, rgba(70,150,235,0.07) 0px, rgba(70,150,235,0.07) 1px, rgba(70,150,235,0) 1px, rgba(70,150,235,0) 13px),
-    linear-gradient(180deg, #d3edff 0%, #ddf3ff 22%, #bfe2fb 58%, #9ec6ea 100%);
-}
-
-/* 导航：顶部玻璃反光罩亮边，去“偏平” */
-.nav {
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,1),
-    inset 0 0 9px rgba(255,255,255,0.85),
-    inset 0 -1px 0 rgba(255,255,255,0.85),
-    0 1px 1px rgba(255,255,255,0.9),
-    0 18px 30px -18px rgba(4,42,120,0.85);
-}
-
-/* ---------- 蓝色糖果按钮：糖衣锐化 ---------- */
-.btn,
-.nav-links a.btn-mail,
-.nav-links a.nav-cta,
-.nav-links a.btn {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.58) 7%, rgba(255,255,255,0.14) 18%, rgba(255,255,255,0) 26%),
-    radial-gradient(78% 210% at 50% -38%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 18%, rgba(255,255,255,0.30) 44%, rgba(255,255,255,0) 62%),
-    radial-gradient(24% 44% at 26% 9%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.60) 40%, rgba(255,255,255,0) 70%),
-    radial-gradient(60% 130% at 82% 118%, rgba(0,60,215,0.70) 0%, rgba(0,60,215,0) 58%),
-    linear-gradient(180deg, #a5e6ff 0%, #4cc2ff 20%, #1489f2 47%, #0a5fd8 74%, #053c9e 100%);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,1),
-    inset 0 0 0 1px rgba(255,255,255,0.55),
-    inset 0 3px 7px -3px rgba(255,255,255,0.95),
-    inset 0 -12px 18px -12px rgba(3,26,120,0.72),
-    0 3px 2px rgba(2,28,120,0.60),
-    0 6px 15px -6px rgba(10,85,230,0.75),
-    0 0 16px -4px rgba(150,230,255,0.90);
-}
-
-.btn:hover,
-.nav-links a.btn-mail:hover,
-.nav-links a.nav-cta:hover,
-.nav-links a.btn:hover {
-  filter: saturate(1.28) brightness(1.10);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.66) 8%, rgba(255,255,255,0.18) 20%, rgba(255,255,255,0) 28%),
-    radial-gradient(84% 220% at 50% -42%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0.40) 48%, rgba(255,255,255,0) 66%),
-    radial-gradient(26% 48% at 25% 7%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.70) 44%, rgba(255,255,255,0) 74%),
-    radial-gradient(60% 130% at 82% 118%, rgba(0,60,215,0.60) 0%, rgba(0,60,215,0) 58%),
-    linear-gradient(180deg, #b9eeff 0%, #61caff 18%, #1d94f6 46%, #0c68e4 74%, #0a47b2 100%);
-  box-shadow:
-    inset 0 3px 0 rgba(255,255,255,1),
-    inset 0 0 0 1px rgba(255,255,255,0.80),
-    inset 0 5px 10px -3px rgba(255,255,255,1),
-    inset 0 -12px 18px -11px rgba(4,30,130,0.50),
-    0 4px 3px rgba(2,28,120,0.55),
-    0 14px 26px -8px rgba(10,90,230,0.95),
-    0 0 24px -2px rgba(170,240,255,1);
-}
-
-.btn:active,
-.nav-links a.btn-mail:active,
-.nav-links a.nav-cta:active,
-.nav-links a.btn:active {
-  transform: translateY(2px) scale(0.97);
-  filter: saturate(0.9) brightness(0.96);
-  background: linear-gradient(180deg, #5fc8ff 0%, #1f92f0 42%, #0b64db 72%, #0848b4 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.35),
-    inset 0 7px 14px -2px rgba(2,22,110,0.95),
-    inset 0 4px 8px rgba(2,22,110,0.60),
-    inset 0 -1px 2px -1px rgba(255,255,255,0.30),
-    0 1px 1px rgba(2,28,120,0.40),
-    0 2px 5px -2px rgba(10,80,220,0.50);
-}
-
-/* 白/亮青糖果按钮同样锐化顶部糖衣 */
-.btn-ghost,
-.btn-outline {
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,1),
-    inset 0 0 0 1.5px rgba(255,255,255,1),
-    inset 0 3px 6px -2px rgba(255,255,255,1),
-    inset 0 -8px 12px -8px rgba(8,60,180,0.28),
-    0 3px 2px rgba(5,45,150,0.40),
-    0 8px 16px -6px rgba(20,100,235,0.45),
-    0 0 14px -4px rgba(190,235,255,0.95);
-}
-
-/* ---------- 卡片：厚玻璃边 + 顶部锐弧高光 + 积水影 ---------- */
-.card,
-.feature-card,
-.partner-simple .partner-logo {
-  border: 1px solid rgba(5,48,148,0.75);
-  box-shadow:
-    inset 0 0 0 2px rgba(255,255,255,0.98),
-    inset 0 2px 2px rgba(255,255,255,1),
-    inset 0 10px 16px -10px rgba(255,255,255,0.95),
-    inset 0 -22px 32px -20px rgba(8,52,175,0.55),
-    0 4px 3px rgba(6,45,150,0.35),
-    0 24px 40px -20px rgba(3,45,150,0.90),
-    0 0 26px -8px rgba(130,225,255,1);
-}
-
-.card::before,
-.feature-card::before {
-  top: 3px;
-  left: 5%;
-  right: 5%;
-  height: 22px;
-  border-radius: 50%;
-  background: radial-gradient(56% 92% at 50% 6%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.70) 46%, rgba(255,255,255,0) 82%);
-  opacity: 0.92;
-}
-
-.card:hover,
-.feature-card:hover {
-  box-shadow:
-    inset 0 0 0 2px rgba(255,255,255,1),
-    inset 0 3px 3px rgba(255,255,255,1),
-    inset 0 12px 18px -10px rgba(255,255,255,1),
-    inset 0 -18px 26px -16px rgba(10,60,170,0.40),
-    0 6px 5px rgba(6,45,150,0.35),
-    0 34px 48px -20px rgba(3,55,185,1),
-    0 0 40px -8px rgba(150,235,255,1);
-}
-
-/* ---------- 标题：压在湿润玻璃上的立体字 ---------- */
-h1, h2, h3 {
-  text-shadow:
-    0 1px 0 rgba(255,255,255,0.92),
-    0 0 1px rgba(255,255,255,0.92),
-    0 -1px 1px rgba(255,255,255,0.42),
-    0 2px 2px rgba(3,34,110,0.32),
-    0 6px 14px -6px rgba(20,100,220,0.35);
-}
-
-.hero .hl {
-  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.95)) drop-shadow(0 2px 2px rgba(3,32,110,0.35)) drop-shadow(0 4px 10px rgba(40,150,255,0.30));
-}
-
-/* ---------- Footer：深邃 Dock 玻璃条 ---------- */
-.footer {
-  border-top: 1px solid rgba(20,100,235,0.95);
-  background:
-    repeating-linear-gradient(180deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 1px, rgba(255,255,255,0) 1px, rgba(255,255,255,0) 4px),
-    radial-gradient(110% 260% at 14% -30%, rgba(150,230,255,0.50) 0%, rgba(90,180,255,0.16) 36%, rgba(90,180,255,0) 64%),
-    linear-gradient(180deg, #1e6ed4 0%, #124fa8 28%, #0a3578 58%, #041d4c 100%);
-  box-shadow:
-    inset 0 2px 1px rgba(255,255,255,0.90),
-    inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 0 46px rgba(3,20,80,0.55),
-    inset 0 -3px 0 rgba(1,12,45,0.90),
-    0 -16px 32px -22px rgba(2,25,90,0.95);
-}
-
-
-/* ============================================================
-   Aqua v4 · 紧凑可读 + 合作方卡片化（依据用户反馈）
-   1) 首页 hero 不再放大 logo，主内容上移可读；
-   2) 每个合作伙伴独立成"大玻璃框"：logo 放大，简介/链接同框。
-   ============================================================ */
-
-/* ---- 首页 hero 紧凑化：隐藏巨型 logo 区，单列居中 ---- */
-.hero { padding: 30px 0 24px; }
-.hero-grid { grid-template-columns: 1fr; gap: 0; text-align: center; }
-.hero h1 { font-size: clamp(30px, 4.6vw, 42px); line-height: 1.22; }
-.hero p.lead { max-width: 720px; margin: 0 auto 8px; }
-.hero-actions { justify-content: center; margin-top: 20px; }
-.hero-art { display: none; }
-
-/* ---- 子页页头小幅压缩，让正文早点出现 ---- */
-.page-hero { padding: 28px 0 22px; }
-.section { padding: 32px 0 44px; }
-
-/* ---- 合作方卡片化：一个大玻璃框装下 logo + 简介 + 链接 ---- */
-.partner-simple {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  justify-content: center;
-  gap: 26px 34px;
-  margin: 0 0 24px;
-  padding: 34px 36px;
-  border: 1px solid rgba(5, 48, 148, 0.75);
-  border-radius: 24px;
-  background:
-    radial-gradient(120% 130% at 84% -14%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.25) 34%, rgba(255, 255, 255, 0) 62%),
-    radial-gradient(56% 100% at 10% 108%, rgba(40, 140, 250, 0.18) 0%, rgba(40, 140, 250, 0) 56%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(244, 250, 255, 0.86) 52%, rgba(218, 238, 255, 0.9) 100%);
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.98),
-    inset 0 2px 2px rgba(255, 255, 255, 1),
-    inset 0 10px 16px -10px rgba(255, 255, 255, 0.95),
-    inset 0 -22px 32px -20px rgba(8, 52, 175, 0.5),
-    0 4px 3px rgba(6, 45, 150, 0.32),
-    0 24px 40px -20px rgba(3, 45, 150, 0.85),
-    0 0 26px -8px rgba(130, 225, 255, 1);
-}
-
-/* 未来新增合作伙伴时，相邻卡片自动拉开 */
-.partner-simple + .partner-simple { margin-top: 28px; }
-
-/* 合作卡片顶部穹顶高光 */
-.partner-simple::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: 3px;
-  left: 4%;
-  right: 4%;
-  height: 22px;
-  border-radius: 50%;
-  background: radial-gradient(56% 92% at 50% 6%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.7) 46%, rgba(255, 255, 255, 0) 82%);
-  pointer-events: none;
-}
-
-/* 合作方 logo 玻璃板放大，撑住牌面 */
-.partner-simple .partner-logo {
-  padding: 22px 34px;
-  border-radius: 20px;
-}
-.partner-simple .partner-logo img {
-  height: 92px;
-  width: auto;
-  max-width: 240px;
-  object-fit: contain;
-  filter: drop-shadow(0 3px 4px rgba(8, 50, 150, 0.35));
-}
-
-.partner-simple h3 { font-size: 20px; margin-bottom: 6px; }
-.partner-simple .quote { font-size: 15px; line-height: 1.7; max-width: 640px; }
-.partner-simple .btn-outline { white-space: nowrap; }
-
-@media (max-width: 900px) {
-  .partner-simple {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
-    padding: 26px 20px;
-    gap: 14px;
-  }
-  .partner-simple .partner-logo { padding: 14px 26px; }
-  .partner-simple .partner-logo img { height: 74px; }
-  .partner-simple .quote { max-width: 100%; }
-  .hero h1 { font-size: 31px; }
-}
-
-/* v4.1 fix: img.brand-logo 自身即 img，尺寸规则需直接命中 img 元素（.brand .brand-logo img 永不匹配） */
-img.brand-logo {
-  width: 34px !important;
-  height: 34px !important;
-  object-fit: contain;
-}
-
-
-/* ===== v4.2：无logo合作伙伴的文字徽标（小明之父工作室 XMZF） ===== */
-.partner-simple .partner-logo.partner-logo-text {
-  padding: 20px 34px;
-  font-size: 40px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  line-height: 1.1;
-  color: #073a93;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.95),
-    0 2px 3px rgba(4, 40, 120, 0.28);
-  background:
-    radial-gradient(120% 160% at 28% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0) 64%),
-    linear-gradient(180deg, #ffffff 0%, #eaf6ff 55%, #d2e9fd 100%);
-}
-@media (max-width: 900px) {
-  .partner-simple .partner-logo.partner-logo-text {
-    font-size: 30px;
-    padding: 14px 26px;
-  }
-}
-
-
-/* ===== v5：拟物化矢量图标 =====
-   卡片图标由“简单线条 SVG”升级为“自绘拟物玻璃盘+立体符号”。
-   .card-icon 原蓝渐变小方块让位，改由 svg 独立绘制圆润盘体、
-   顶部高光、地面投影与立体符号，形成拟物化矢量图质感。 */
-.card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  min-width: 0;
-  min-height: 0;
-  border-radius: 0;
-  font-size: 0;
-  margin-bottom: 14px;
-  background: none;
-  border: none;
-  box-shadow: none;
-  text-shadow: none;
-}
-
-.card-icon svg {
-  display: block;
-  width: 62px;
-  height: 62px;
-  filter: drop-shadow(0 7px 11px rgba(6, 44, 140, 0.4));
-}
-
-/* ============================================================
-   致谢页补充样式（仅新增，不覆盖主站主题）
-   ============================================================ */
-/* 导航文字徽标（无水印图片时替代 logo） */
-.brand-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  font-size: 18px;
-  font-weight: 900;
-  color: #ffffff;
-  text-shadow: 0 -1px 2px rgba(3, 30, 110, 0.6);
-  background:
-    radial-gradient(120% 160% at 28% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.35) 42%, rgba(255, 255, 255, 0) 62%),
-    linear-gradient(180deg, #5ec6ff 0%, #1f90f2 52%, #0b62d8 100%);
-  border: 1px solid rgba(7, 45, 150, 0.65);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.85),
-    inset 0 2px 3px rgba(255, 255, 255, 0.55),
-    inset 0 -5px 9px -5px rgba(4, 30, 110, 0.65),
-    0 2px 3px rgba(6, 40, 130, 0.35),
-    0 7px 14px -8px rgba(8, 80, 210, 0.7);
-  -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.62, transparent), to(rgba(255, 255, 255, 0.3)));
-  transform: translateZ(0);
-}
-
-/* 致谢主体玻璃大卡（屏幕前每一位支持者） */
-.support-card {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 40px 38px;
-  text-align: center;
-}
-.support-card h3 { margin: 0 0 8px; }
-.support-card .desc { max-width: 580px; margin: 0 auto; }
-.support-card .chips { justify-content: center; margin-top: 24px; }
-.support-card .support-actions { margin-top: 26px; }
-
-/* 页头徽章行距微调 */
-.hero .crumbs { margin-bottom: 18px; }
-
-
-/* ============================================================
-   vaylo.nex.laswi.com.cn 下载页补充样式（仅新增，不覆盖主站主题）
-   ============================================================ */
-/* 导航真实 logo（复用原站契约：玻璃小圆角方块） */
-.brand .brand-logo { display: inline-flex; }
-.brand .brand-logo img {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  object-fit: contain;
-}
-
-/* hero 副标语胶囊 */
-.vaylo-tag {
-  display: inline-block;
-  margin-top: 14px;
-  padding: 6px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 -1px 1px rgba(3, 30, 110, 0.45);
-  background: linear-gradient(180deg, #5ec6ff 0%, #1f90f2 60%, #0b62d8 100%);
-  border: 1px solid rgba(7, 45, 150, 0.55);
-  border-radius: 999px;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
-    inset 0 1px 2px rgba(255, 255, 255, 0.55),
-    0 2px 4px rgba(6, 40, 130, 0.3),
-    0 6px 14px -6px rgba(8, 80, 210, 0.65);
-}
-
-/* 下载页双栏栅格 */
-.vaylo-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 24px;
-  align-items: stretch;
-}
-.vaylo-grid > .card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-}
-.vaylo-grid .card h3 { margin: 6px 0 10px; }
-.vaylo-grid .desc { max-width: none; }
-
-/* 下载信息卡 */
-.dl-card .dl-name {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.dl-card .dl-name code {
-  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
-  font-size: 18px;
-  font-weight: 800;
-  color: #063a9e;
-}
-.dl-card .dl-badge {
-  padding: 3px 10px;
-  font-size: 12px;
-  font-weight: 800;
-  color: #ffffff;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #5ec6ff, #1f90f2 55%, #0b62d8);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55), 0 2px 4px rgba(6,40,130,.25);
-}
-.dl-meta {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 6px 18px;
-  margin: 10px 0 4px;
-  font-size: 13.5px;
-}
-.dl-meta dt { color: rgba(4, 45, 130, 0.72); font-weight: 700; white-space: nowrap; }
-.dl-meta dd { margin: 0; color: #0a3c96; font-weight: 600; word-break: break-all; }
-.dl-note { margin: 8px 0 16px; font-size: 12.5px; color: rgba(4, 45, 130, 0.66); line-height: 1.7; }
-.btn-lg {
-  padding: 14px 30px;
-  font-size: 16px;
-  border-radius: 999px;
-}
-.vaylo-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; }
-.vaylo-actions .btn-lg + .btn-lg { /* noop */ }
-
-@media (max-width: 900px) {
-  .vaylo-grid { grid-template-columns: 1fr; }
-}
-
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VayloOS — 純自研內核操作系統 · LaswI Studio</title>
+<meta name="description" content="VayloOS 是 LaswI Studio 旗下純自研內核操作系統，不基於 Linux，內核從零寫起，以 ISO 鏡像形式發佈，可直接裝機。">
+
+<!-- 字體：Space Grotesk（標題）/ Noto Sans（正文）/ JetBrains Mono（本頁核心字體） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..500,0,0&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="https://laswi.com.cn">
-        <span class="brand-logo"><img src="data:image/png;base64,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" alt="LaswI 标志" /></span>
-        LaswI
+<!-- ================= ① 固定導航 ================= -->
+<nav class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="VayloOS">
+    <img class="brand-logo" src="logo.png" alt="LaswI Studio logo">
+    <span class="brand-word hollow">LaswI</span>
+  </a>
+
+  <div class="nav-links">
+    <a href="#top" data-i18n="nav.home">首頁</a>
+    <a href="#what" data-i18n="nav.what">定位</a>
+    <a href="#arch" data-i18n="nav.arch">內核架構</a>
+    <a href="#features" data-i18n="nav.features">特性</a>
+    <a href="#terminal" data-i18n="nav.terminal">終端</a>
+    <a href="#download" data-i18n="nav.download">下載</a>
+  </div>
+
+  <div class="nav-end">
+    <div class="seg" role="group" aria-label="Language">
+      <button class="seg-btn is-active" data-lang-btn="zh" aria-pressed="true">
+        <span class="seg-long">简体中文</span><span class="seg-short">简</span>
+      </button>
+      <button class="seg-btn" data-lang-btn="tw" aria-pressed="false">
+        <span class="seg-long">繁體中文</span><span class="seg-short">繁</span>
+      </button>
+      <button class="seg-btn" data-lang-btn="en" aria-pressed="false">
+        <span class="seg-long">English</span><span class="seg-short">EN</span>
+      </button>
+    </div>
+
+    <!-- 版本角標：懸停展開更新日誌摘要 -->
+    <div class="ver" tabindex="0">
+      <span class="ver-badge mono" id="verBadge">v0.1.0</span>
+      <div class="ver-pop" role="tooltip">
+        <p class="ver-pop-t mono" data-i18n="nav.changelog">更新日誌</p>
+        <ul class="ver-list" id="verList"></ul>
+      </div>
+    </div>
+
+    <a class="nav-dl" id="navDl" href="https://vaylo.nex.laswi.com.cn/vaylos.iso" target="_blank" rel="noopener">
+      <span data-i18n="nav.downloadShort">下載 ISO</span>
+      <span class="material-symbols-rounded" aria-hidden="true">download</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ================= ② Hero 首屏 ================= -->
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="blob blob-c"></span>
+    <span class="slab slab-a"></span>
+    <span class="slab slab-b"></span>
+    <span class="bracket bracket-a"></span>
+    <span class="bracket bracket-b"></span>
+    <span class="node node-a"></span>
+    <span class="node node-b"></span>
+    <span class="node node-c"></span>
+  </div>
+
+  <div class="wrap hero-inner">
+    <div class="hero-left">
+      <p class="eyebrow mono" data-i18n="hero.eyebrow">純自研內核操作系統 · LaswI Studio</p>
+
+      <h1 class="hero-title hollow">VAYLOOS</h1>
+
+      <p class="hero-tagline" data-i18n="hero.tagline">從內核第一行代碼開始，自己寫一個操作系統。</p>
+
+      <!-- 終端視窗：點擊跳轉至 ⑧ 下載板塊 -->
+      <a class="terminal" href="#download" aria-label="jump to download">
+        <span class="terminal-bar">
+          <span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span>
+          <span class="t-title mono">vaylo@kernel</span>
+        </span>
+        <span class="terminal-body mono">
+          <span class="t-prompt">vaylo@kernel:~$</span>
+          <span class="t-cmd" data-i18n="hero.cmd">boot</span>
+          <span class="caret" aria-hidden="true"></span>
+        </span>
       </a>
-      <div class="nav-links">
-        <a href="https://laswi.com.cn">官网首页</a>
-        <a href="https://laswi.com.cn/os.html">系统产品</a>
-        <a href="https://laswi.com.cn/about.html">关于我们</a>
-        <a class="nav-cta btn-mail" href="mailto:3199704668@qq.com">合作联系</a>
+
+      <span class="hero-scroll mono">
+        <span class="material-symbols-rounded" aria-hidden="true">south</span>
+        <span data-i18n="hero.scroll">向下捲動</span>
+      </span>
+    </div>
+
+    <!-- 同心圓環鏤空：SVG mask 切出三層環，底層紫→青綠漸變透出 -->
+    <div class="hero-right">
+      <div class="rings-wrap" aria-hidden="true">
+        <svg class="rings" viewBox="0 0 420 420" role="img" aria-label="Concentric kernel rings">
+          <defs>
+            <radialGradient id="vGrad" cx="42%" cy="34%" r="78%">
+              <stop offset="0%" stop-color="#64FFDA"></stop>
+              <stop offset="48%" stop-color="#7C4DFF"></stop>
+              <stop offset="100%" stop-color="#1A237E"></stop>
+            </radialGradient>
+            <linearGradient id="vLine" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#7C4DFF" stop-opacity=".9"></stop>
+              <stop offset="100%" stop-color="#64FFDA" stop-opacity=".5"></stop>
+            </linearGradient>
+            <mask id="ringsMask">
+              <rect width="420" height="420" fill="#000"></rect>
+              <circle cx="210" cy="210" r="186" fill="none" stroke="#fff" stroke-width="13"></circle>
+              <circle cx="210" cy="210" r="138" fill="none" stroke="#fff" stroke-width="22"></circle>
+              <circle cx="210" cy="210" r="84" fill="none" stroke="#fff" stroke-width="30"></circle>
+              <circle cx="210" cy="210" r="36" fill="#fff"></circle>
+            </mask>
+          </defs>
+
+          <!-- 鏤空載體：漸變色板只在環形與核心處透出 -->
+          <g mask="url(#ringsMask)">
+            <rect width="420" height="420" fill="url(#vGrad)"></rect>
+          </g>
+
+          <!-- 細線環 + 節點，呼應連接線語言 -->
+          <g fill="none" stroke="url(#vLine)" stroke-width="1.2" opacity=".45">
+            <circle cx="210" cy="210" r="164"></circle>
+            <circle cx="210" cy="210" r="112"></circle>
+            <circle cx="210" cy="210" r="56"></circle>
+          </g>
+
+          <!-- 最內圈：內核核心，緩慢脈衝 -->
+          <circle class="ring-core-pulse" cx="210" cy="210" r="36" fill="#7C4DFF"></circle>
+          <circle cx="210" cy="210" r="21" fill="#B8A6FF" opacity=".92"></circle>
+
+          <g class="ring-nodes" fill="#64FFDA">
+            <circle cx="210" cy="24" r="4.5"></circle>
+            <circle cx="396" cy="210" r="4.5"></circle>
+            <circle cx="210" cy="396" r="4.5"></circle>
+            <circle cx="24" cy="210" r="4.5"></circle>
+          </g>
+        </svg>
+
+        <!-- 環外圍繞的分層圓角矩形小色塊，緩慢旋轉 -->
+        <div class="orbit orbit-a">
+          <span class="orbit-chip chip-violet"></span>
+          <span class="orbit-chip chip-cyan"></span>
+          <span class="orbit-chip chip-amber"></span>
+        </div>
+        <div class="orbit orbit-b">
+          <span class="orbit-chip chip-indigo"></span>
+          <span class="orbit-chip chip-cyan"></span>
+        </div>
       </div>
     </div>
-  </nav>
+  </div>
 
-  <header class="hero">
-    <div class="container">
-      <span class="crumbs">LaswI Studio · 系统产品下载</span>
-      <h1>VayloOS</h1>
-      <span class="vaylo-tag">搭载自研 Nex Kernel 内核</span>
-      <p class="lead">
-        以自研 Nex Kernel 内核为底层的操作系统，由团队自主设计启动、调度与系统服务等关键环节，
-        以自主可控和长期演进为原则，是团队在系统底层的完整实践。
-      </p>
-      <div class="vaylo-actions">
-        <a class="btn btn-blue btn-lg" href="vaylos.iso" download>下载 vaylos.iso · 7.8 MB</a>
-        <a class="btn btn-outline btn-lg" href="https://laswi.com.cn/os.html" target="_blank" rel="noopener">VayloOS 详细介绍 →</a>
-      </div>
-    </div>
-  </header>
+  <span class="hero-corner hero-corner-bl hollow">LaswI Studio</span>
+  <span class="hero-corner hero-corner-br mono">VayloOS</span>
+</header>
 
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <span class="kicker">DOWNLOAD</span>
-        <h2>下载 VayloOS</h2>
-        <p>ISO 镜像已就绪，欢迎下载体验。</p>
-      </div>
+<main>
 
-      <div class="vaylo-grid">
-        <div class="card">
-          <span class="kicker">OVERVIEW</span>
-          <h3>VayloOS <span class="vaylo-tag" style="margin-top:0;font-size:12px;vertical-align:middle;">搭载自研 Nex Kernel 内核</span></h3>
-          <p class="desc">
-            以自研 Nex Kernel 内核为底层的操作系统，由团队自主设计启动、调度与系统服务等关键环节，
-            以自主可控和长期演进为原则，是团队在系统底层的完整实践。
-          </p>
-          <p class="desc">更多产品细节、系统特性与更新说明，请前往 LaswI 官网系统产品页查看。</p>
-          <div class="vaylo-actions" style="margin-top:16px;">
-            <a class="btn-outline" href="https://laswi.com.cn/os.html" target="_blank" rel="noopener">查看详细介绍 →</a>
-          </div>
+  <!-- ================= ③ 什麼是 VayloOS ================= -->
+  <section class="sec sec-light" id="what">
+    <div class="wrap">
+      <div class="what-grid reveal">
+        <div class="what-left">
+          <p class="sec-kicker mono">// 02 — POSITIONING</p>
+          <h2 class="sec-title">
+            <span class="big-word hollow">WHAT</span>
+            <span class="sec-sub" data-i18n="what.title">什麼是 VayloOS</span>
+          </h2>
         </div>
 
-        <div class="card dl-card">
-          <span class="kicker">ISO IMAGE</span>
-          <div class="dl-name">
-            <code>vaylos.iso</code>
-            <span class="dl-badge">7.8 MB</span>
-          </div>
-          <dl class="dl-meta">
-            <dt>文件名</dt><dd>vaylos.iso</dd>
-            <dt>大小</dt><dd>7.8 MB（8,230,912 字节）</dd>
-            <dt>更新日期</dt><dd>2026-08-20</dd>
-            <dt>SHA-256</dt><dd>db5578723581d2af65a77140e4eb892fb559d013da3d945e58cfd17163c43358</dd>
-          </dl>
-          <p class="dl-note">点击下方按钮开始下载；部署时请将 vaylos.iso 与本页面放置于同一目录。</p>
-          <a class="btn btn-blue btn-lg" href="vaylos.iso" download>下载 vaylos.iso</a>
+        <div class="what-right">
+          <div class="manifest" id="manifest"></div>
+          <p class="manifest-note mono" data-i18n="what.note">// 內核 · 系統服務 · 命令列環境，全部自主</p>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span>© 2026 LaswI · 保留所有权利</span>
-      <span>
-        <a href="https://laswi.com.cn">官网首页</a> · <a href="https://laswi.com.cn/os.html">系统产品</a> · <a href="https://laswi.com.cn/about.html">关于我们</a> · <a href="https://rtstu.com" target="_blank" rel="noopener">热土工作室</a> · <a href="mailto:3199704668@qq.com">合作联系</a>
-      </span>
-    </div>
-  </footer>
+  <!-- ================= ④ 內核架構 ================= -->
+  <section class="sec sec-dark" id="arch">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="sec-kicker mono">// 03 — KERNEL</p>
+        <h2 class="sec-title">
+          <span class="big-word hollow">ARCHITECTURE</span>
+          <span class="sec-sub" data-i18n="arch.title">內核架構</span>
+        </h2>
+        <p class="sec-hint mono" data-i18n="arch.hint">從硬件到系統服務，三層結構 · 懸停或點按任一層查看細節</p>
+      </div>
 
+      <div class="arch-grid reveal">
+        <!-- 配置順序為自下而上：硬件 → 內核 → 系統服務 -->
+        <div class="arch-stack" id="archStack"></div>
+        <aside class="arch-detail" id="archDetail" data-tone="violet"></aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ⑤ 核心特性 ================= -->
+  <section class="sec sec-features" id="features">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="sec-kicker mono">// 04 — FEATURES</p>
+        <h2 class="sec-title">
+          <span class="big-word hollow">FEATURES</span>
+          <span class="sec-sub" data-i18n="feat.title">核心特性</span>
+        </h2>
+        <p class="sec-hint mono" data-i18n="feat.hint">磁貼每 5 秒自動翻面 · 懸停暫停並放大</p>
+      </div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+  </section>
+
+  <!-- ================= ⑥ 終端環境 ================= -->
+  <section class="sec sec-light" id="terminal">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="sec-kicker mono">// 05 — TERMINAL</p>
+        <h2 class="sec-title">
+          <span class="big-word hollow">TERMINAL</span>
+          <span class="sec-sub" data-i18n="term.title">終端環境</span>
+        </h2>
+        <p class="sec-hint mono" data-i18n="term.hint">幾何色塊拼貼模擬，非真實截圖</p>
+      </div>
+
+      <!-- ⚠ 佔位說明：日後可將整個 #termStage 內容替換為真實截圖（保持 16:9 與圓角） -->
+      <div class="term-stage reveal" id="termStage"></div>
+      <p class="term-note mono" data-i18n="term.note">/* 幾何拼貼模擬 — 日後可整塊替換為真實截圖 */</p>
+
+      <div class="term-cards reveal" id="termCards"></div>
+    </div>
+  </section>
+
+  <!-- ================= ⑦ 版本與硬件要求 ================= -->
+  <section class="sec sec-dark" id="version">
+    <div class="wrap">
+      <div class="ver-grid reveal">
+        <div class="ver-left">
+          <p class="sec-kicker mono">// 06 — RELEASE</p>
+          <h2 class="ver-num hollow" id="verBig">v0.1.0</h2>
+          <div class="ver-meta mono">
+            <span class="ver-meta-k" data-i18n="ver.released">發佈日期</span>
+            <span class="ver-meta-v" id="verDate">2026-01-01</span>
+          </div>
+          <div class="ver-meta mono">
+            <span class="ver-meta-k" data-i18n="ver.arch">架構</span>
+            <span class="ver-meta-v" id="verArch">x86_64</span>
+          </div>
+          <div class="ver-meta mono">
+            <span class="ver-meta-k" data-i18n="ver.size">鏡像大小</span>
+            <span class="ver-meta-v" id="verSize">2.4 GB</span>
+          </div>
+        </div>
+
+        <div class="ver-right">
+          <div class="req-head">
+            <span class="material-symbols-rounded warn-icon" aria-hidden="true">warning</span>
+            <h3 data-i18n="ver.req">硬件要求</h3>
+            <span class="req-tip mono" data-i18n="ver.reqTip">安裝前請確認硬件兼容</span>
+          </div>
+          <ul class="req-list" id="reqList"></ul>
+          <p class="req-note mono" data-i18n="ver.reqNote">// 以上數值為暫定，正式發佈前請以官方說明為準</p>
+        </div>
+      </div>
+
+      <div class="clog reveal" id="clog">
+        <button class="clog-toggle mono" id="clogToggle" aria-expanded="false" aria-controls="clogList">
+          <span id="clogToggleText" data-i18n="ver.changelogOpen">展開完整更新日誌</span>
+          <span class="material-symbols-rounded" aria-hidden="true">expand_more</span>
+        </button>
+        <ul class="clog-list" id="clogList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ⑧ 下載 ISO ================= -->
+  <section class="sec sec-download" id="download">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <p class="sec-kicker mono">// 07 — GET ISO</p>
+        <h2 class="sec-title">
+          <span class="big-word hollow">GET ISO</span>
+          <span class="sec-sub" data-i18n="dl.title">下載 VayloOS</span>
+        </h2>
+      </div>
+
+      <div class="mirror reveal">
+        <!-- 幾何化 ISO 文件圖標：圓角矩形 + 折角 + 內部圓環鏤空 -->
+        <div class="iso-icon" aria-hidden="true">
+          <span class="iso-fold"></span>
+          <span class="iso-ring"></span>
+        </div>
+
+        <div class="mirror-body">
+          <p class="mirror-name mono" id="mirName">vaylos.iso</p>
+          <p class="mirror-meta mono" id="mirMeta">v0.1.0 · 2.4 GB · x86_64</p>
+        </div>
+
+        <a class="btn-primary" id="dlBtn" href="https://vaylo.nex.laswi.com.cn/vaylos.iso" target="_blank" rel="noopener">
+          <span class="material-symbols-rounded" aria-hidden="true">download</span>
+          <span data-i18n="dl.btn">下載 ISO 鏡像</span>
+          <span class="arrow material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- SHA256 校驗碼 -->
+      <div class="sha reveal">
+        <span class="sha-label mono">SHA256</span>
+        <button class="sha-val mono" id="shaVal" aria-expanded="false"></button>
+        <button class="sha-copy mono" id="shaCopy">
+          <span class="material-symbols-rounded" aria-hidden="true">content_copy</span>
+          <span data-i18n="dl.copy">複製</span>
+        </button>
+        <span class="sha-hint mono">
+          <span class="material-symbols-rounded" aria-hidden="true">verified_user</span>
+          <span data-i18n="dl.shaHint">下載後請校驗鏡像完整性</span>
+        </span>
+      </div>
+
+      <div class="steps reveal" id="steps"></div>
+
+      <p class="warning">
+        <span class="material-symbols-rounded" aria-hidden="true">report</span>
+        <span data-i18n="dl.warning">安裝系統有風險，請提前備份數據，建議先在虛擬機或備用設備上體驗。</span>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= ⑨ 頁腳 ================= -->
+<footer class="footer">
+  <div class="wrap">
+    <h2 class="footer-title hollow reveal">LET'S TALK</h2>
+    <div class="mail-list" id="mailList"></div>
+    <p class="footer-blurb" data-i18n="ft.blurb">使用問題、硬件兼容反饋或合作，歡迎郵件聯繫。</p>
+    <p class="footer-rights mono" id="rights">© LaswI Studio / VayloOS · v0.1.0</p>
+  </div>
+</footer>
+
+<!-- 浮層提示 -->
+<div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
 </body>
 </html>
